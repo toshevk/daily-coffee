@@ -1,15 +1,23 @@
 import requests
 from random import randint
-
+from PIL import Image
+from io import BytesIO
 
 def retrieve_photo():
-     url = "https://coffee.alexflipnote.dev/random"
+     image_url = "https://coffee.alexflipnote.dev/random"
+     response = requests.get(image_url)
 
-     response = requests.get(url)
-     data = response.content
+     img = Image.open(BytesIO(response.content))
+     if img.mode != "RGB":
+          img = img.convert("RGB")
 
-     with open("static\img.jpg", "wb") as file:
-          file.write(data)
+     original_width, original_height = img.size
+     desired_height = 512
+     aspect_ratio = original_width/original_height
+     new_width = int(desired_height * aspect_ratio)
+     img = img.resize((new_width, desired_height))
+
+     img.save("static/images/img.jpg")
 
 def retrieve_quote():
      url = "https://raw.githubusercontent.com/filiphuhta/coffee-quote/refs/heads/main/data/quotes.json"
@@ -19,3 +27,7 @@ def retrieve_quote():
      index = randint(0, len(data))
 
      return data[index]['quote']
+
+if __name__ == "__main__":
+     retrieve_photo()
+     retrieve_quote()

@@ -2,11 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <title>Flask Coffee</title>
 </head>
-<body>
-    <h1>Hello, have a coffee from me</h1>
-    <img src="{{ image }}">
-    <p>{{ quote }}</p>
+<body class="bg-cover bg-center" style="background-image: url('static/images/background.jpg')">
+    <div class="min-h-screen flex justify-center items-center">
+        <div class="text-center font-semibold text-white rounded-lg shadow-lg p-8" style="background-color: rgba(31, 31, 31, 0.8)">
+            <h1 class="text-3xl mb-4">Hello, Friends!</h1>
+            <h2 class="text-2xl mb-4">Take a moment and enjoy a coffee from me</h2>
+            <img src="{{ image }}" class="mb-4 mx-auto object-contain">
+            <p class="text-lg">{{ quote }}</p>
+        </div>
+    </div>
 </body>
 </html>
