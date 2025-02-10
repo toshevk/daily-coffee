@@ -5,7 +5,11 @@ from io import BytesIO
 
 def retrieve_photo():
      image_url = "https://coffee.alexflipnote.dev/random"
-     response = requests.get(image_url)
+     try:
+          response = requests.get(image_url)
+          response.raise_for_status()
+     except requests.exceptions.RequestException as e:
+          return "static/images/img.jpg"
 
      img = Image.open(BytesIO(response.content))
      if img.mode != "RGB":
@@ -18,13 +22,14 @@ def retrieve_photo():
      img = img.resize((new_width, desired_height))
 
      img.save("static/images/img.jpg")
+     return "static/images/img.jpg"
 
 def retrieve_quote():
      url = "https://raw.githubusercontent.com/filiphuhta/coffee-quote/refs/heads/main/data/quotes.json"
 
      response = requests.get(url)
      data = response.json()
-     index = randint(0, len(data))
+     index = randint(0, len(data) - 1)
 
      return data[index]['quote']
 

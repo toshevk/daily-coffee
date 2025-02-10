@@ -3,12 +3,16 @@ import request
 
 app = Flask(__name__)
 
-quote_of_the_day = request.retrieve_quote()
-photo_of_the_day = request.retrieve_photo()
 
 @app.route("/")
 def home():
-    return render_template("index.html", image="static/images/img.jpg", quote=quote_of_the_day)
+    try:
+        quote_of_the_day = request.retrieve_quote()
+        photo_of_the_day = request.retrieve_photo()
+    except Exception as e:
+        quote_of_the_day = "I love coffee"
+        photo_of_the_day = "static/images/img.jpg"
+    return render_template("index.html", image=photo_of_the_day, quote=quote_of_the_day)
 
 if __name__ == "__main__":
     app.run()
